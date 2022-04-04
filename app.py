@@ -67,13 +67,12 @@ app.layout = html.Div(
             #create the first row
             html.Div(
                 children = [
-                    dcc.Dropdown(species_list, id = "species_selector"),
+                    dcc.Dropdown(species_list, id = "species_selector", style ={"color": "rgb(229 231 235)",
+                                                                                "backgroundColor": "rgb(229 231 235)",
+                                                                                "border-radius": "10px"}),
                 ],
-                className = "species-selector
+                className = "species-selector",
             )
-
-
-
 
         ],
         className = "card-1"
