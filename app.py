@@ -1,15 +1,10 @@
 import dash
-import os
 from dash import dcc, html, dash_table
-import dash_bootstrap_components as dbc
-import dash_leaflet as dl
 from dash.dependencies import Input, Output, State
-from dash_extensions.javascript import Namespace, arrow_function
 import plotly.express as px
 import plotly.graph_objects as go
 from aux.functions import functions
 import pandas as pd
-import json
 import numpy as np
 import base64
 
@@ -34,7 +29,9 @@ species_list = list(set(species_list))
 #get colnames for dash table
 col_names = [{"name": i, "id": i} for i in df.columns]
 
-markers = [dl.Marker(position = [[-63.13,-8.33],[-63.14,-8.34]])]
+
+#set map box token
+mapbox_access_token = px.set_mapbox_access_token(open(".mapbox_token").read())
 
 
 def plotHB(df):
@@ -49,6 +46,31 @@ def plotHB(df):
 
 
 
+def plotMap(lat, long, text, marker):
+    fig = go.Figure(go.Scattermapbox(
+        lat = lat, 
+        lon = long,
+        mode = 'markers',
+        marker = marker,
+        text = text
+        )
+    )
+
+    fig.update_layout(
+        hovermode = 'closest',
+        mapbox_style = "open-street-map",
+        mapbox = dict(
+            accesstoken = mapbox_access_token,
+            bearing = 0,
+            center = go.layout.mapbox.Center(
+                lat = -11,
+                lon = -63
+            ),
+            pitch = 0,
+            zoom = 6
+        )
+    )
+    return fig
 
 ### Create dash layout
 app.layout = html.Div(
@@ -102,11 +124,13 @@ app.layout = html.Div(
             html.Div(
                 children = [
                     #plot map
-                    dl.Map(center = [-11, -63],
-                           zoom = 7,
-                           children = [
-                                dl.TileLayer()
-                           ])
+                    # dl.Map(center = [-11, -63],
+                    #        zoom = 7,
+                    #        children = [
+                    #             dl.TileLayer()
+                    #        ])
+                    dcc.Graph(id = "map", config = {'displayModeBar': False})
+                    
                 ],
                 className = "leaflet-map"
             )
@@ -135,6 +159,32 @@ app.layout = html.Div(
 
 
 
+
+#update map
+@app.callback(Output(component_id = "map", component_property = "figure"),
+              [Input(component_id = "species_selector", component_property = "value")])
+def update_map(species):
+    if species == "No species":
+        return plotMap(lat = ["-11"], 
+                       long = ["-63"], 
+                       text = [""], 
+                       marker = dict(symbol = "college", size = 0))
+    else:
+        new_df = df[df["Species"] == species]
+        new_df = new_df.groupby(["Lat", "Long", "Municipality"]).size().reset_index(name = "count")
+        lat = new_df["Lat"].values
+        lon = new_df["Long"].values
+        text = new_df["Municipality"].values
+        return plotMap(lat = lat,
+                       long = lon,
+                       text = text,
+                       marker = go.scattermapbox.Marker(size = 9)
+        )
+
+
+
+
+
 #update horizontal plot
 @app.callback(Output(component_id = "hor_plot", component_property = "figure"),
               [Input(component_id = "species_selector", component_property = "value")])
@@ -157,6 +207,8 @@ def update_table(species):
         new_df = df[df["Species"] == species]
         new_df = new_df.to_dict('records')
         return new_df
+
+
 #run app
 if __name__ == '__main__':
     app.run_server()
