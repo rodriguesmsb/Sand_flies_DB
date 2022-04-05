@@ -40,7 +40,7 @@ def plotHB(df):
         orientation = "h"
     )
     data = [bar]
-    layout = go.Layout(xaxis = {"title": "Abundance"})
+    layout = go.Layout(xaxis = {"title": "Abundance"}, margin = {"t": 10})
     return {"data": data, "layout": layout}
 
 
@@ -111,10 +111,12 @@ app.layout = html.Div(
         className = "card-1"
     ),
 
-    #last plot
+    #last plot inline-block
     html.Div(
         children = [
-            dcc.Graph(id = "hor_plot")
+            dcc.Graph(id = "hor_plot",
+                     style = {'display': 'grid', 
+                              "margin-left": "50px"})
         ],
         className = "card-2"
     )
@@ -128,7 +130,7 @@ app.layout = html.Div(
               [Input(component_id = "species_selector", component_property = "value")])
 def update_graph(species):
     if species == "No species":
-        return {"data":[] , "layout": go.Layout(xaxis = {"title": "Abundance"})}
+        return {"data":[] , "layout": go.Layout(xaxis = {"title": "Abundance"}, margin = {"t": 10})}
     else:
         new_df = df[df["Species"] == species]
         new_df = new_df.groupby(["Municipality"]).size().reset_index(name = "count")
