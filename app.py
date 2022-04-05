@@ -68,7 +68,8 @@ def plotMap(lat, long, text, marker):
             ),
             pitch = 0,
             zoom = 6
-        )
+        ),
+        margin = {"t": 5, "l": 5, "r": 5, "b": 0}
     )
     return fig
 
@@ -97,7 +98,7 @@ app.layout = html.Div(
                             className = "header-title"
                         ),
                     ],
-                    className = "header-cotainer"
+                    className = "header-container"
                     )
             ],
             className = "header"
@@ -119,24 +120,27 @@ app.layout = html.Div(
                                          "border-radius": "10px"},
                                 value = "No species"),
                 ],
-                className = "species-selector",
-            ),
-            html.Div(
-                children = [
-                    #plot map
-                    # dl.Map(center = [-11, -63],
-                    #        zoom = 7,
-                    #        children = [
-                    #             dl.TileLayer()
-                    #        ])
-                    dcc.Graph(id = "map", config = {'displayModeBar': False})
-                    
-                ],
-                className = "leaflet-map"
+                className = "species-selector"
             )
-
         ],
         className = "card-1"
+    ),
+
+
+    #create a specific card for map
+    html.Div(
+        children = [
+
+            html.Div(
+                children = [
+                    dcc.Graph(id = "map", 
+                              config = {'displayModeBar': False},
+                              style = {"border-radius": "10px"})],
+                className = "map"
+            )
+             
+        ],
+        className = "card-2"
     ),
 
     #last plot inline-block
@@ -144,15 +148,22 @@ app.layout = html.Div(
         children = [
             dcc.Graph(id = "hor_plot",
                      style = {'display': 'grid', 
-                              "margin-left": "50px"}),
+                              "margin-left": "50px"})
+            
+        ],
+        className = "card-3"
+    ),
+    html.Div(
+        children = [
             dash_table.DataTable(columns = col_names,
                                  data = [],
                                  export_format = "csv", 
                                  id = "dash_table",
-                                 page_size=10)
+                                 page_size = 10)
         ],
-        className = "card-2"
+        className = "card-4"
     )
+
     ],
     className = "container"
 )
@@ -168,7 +179,7 @@ def update_map(species):
         return plotMap(lat = ["-11"], 
                        long = ["-63"], 
                        text = [""], 
-                       marker = dict(symbol = "college", size = 0))
+                       marker = dict(symbol = "college"))
     else:
         new_df = df[df["Species"] == species]
         new_df = new_df.groupby(["Lat", "Long", "Municipality"]).size().reset_index(name = "count")
@@ -178,7 +189,7 @@ def update_map(species):
         return plotMap(lat = lat,
                        long = lon,
                        text = text,
-                       marker = go.scattermapbox.Marker(size = 9)
+                       marker = {"size": 15, "symbol": "circle"}
         )
 
 

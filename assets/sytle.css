@@ -14,7 +14,7 @@
     display: grid;
     background-color: rgb(248 250 252);
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto 1fr 1fr;
+    grid-template-rows: auto auto 1fr 1fr;
     max-width: 100%;
     height: 97vh;
 }
@@ -49,15 +49,14 @@
     margin-top: 0;
 }
 
-.header-cotainer{
+.header-container{
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    }
-
+}
 
 .card-1{
     grid-column: 1 / span 6;
-    grid-row: 2 /span 2;
+    grid-row: 2 /span 1;
     border: 3px solid rgb(255, 206, 71);
     border-radius: 8px;
     background-color: white;
@@ -70,6 +69,19 @@
 }
 
 .card-2{
+    display: grid;
+    grid-column: 1 / span 6;
+    grid-row: 3 /span 2;
+    grid-template-columns: repeat(12, 1fr);
+    border: 3px solid rgb(255, 206, 71);
+    border-radius: 8px;
+    background-color: white;
+    margin-right: 50px;
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.card-3{
     grid-column: 7 / span 6;
     grid-row: 2 /span 2;
     border: 3px solid rgb(255, 206, 71);
@@ -77,6 +89,24 @@
     background-color: white;
     margin-right: 50px;
     margin-left: -40px;
+   
+}
+
+.card-4{
+    grid-column: 7 / span 6;
+    grid-row: 4 / span 2;
+    border: 3px solid rgb(255, 206, 71);
+    border-radius: 8px;
+    background-color: white;
+    margin-right: 50px;
+    margin-left: -40px;
+    margin-top: 10px;
+}
+
+
+.map{
+    display: grid;
+    grid-column: 1 / span 12;
 }
 
 
@@ -92,10 +122,4 @@
 #species_selector .VirtualizedSelectFocusedOption {
     background-color: rgb(255, 206, 71);
     color: white;
-  }
-
-.leaflet-map{
-    display: grid;
-    grid-column: 1 / span 12;
-
 }
