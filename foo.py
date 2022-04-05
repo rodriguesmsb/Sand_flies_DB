@@ -1,34 +1,20 @@
-import dash_leaflet as dl
-import dash_leaflet.express as dlx
-from dash import Dash, html, dcc, Output, Input
-from dash_extensions.javascript import assign
+from dash import Dash, dash_table
+import pandas as pd
 
-# A few cities in Denmark.
-cities = [dict(name="Zombie", lat = [57.0268172], lon = [9.837735]),
-          dict(name="Aarhus", lat = [56.1780842], lon = [10.1119354]),
-          dict(name="Copenhagen", lat = [55.6712474], lon = [12.5237848])]
+df = pd.read_csv("data/DATASET_SAND_FLY_RO_MAPS.csv", sep =";", encoding = "ISO-8859-1", low_memory=False)
 
-# Create drop down options.
-dd_options = [dict(value=c["name"], label=c["name"]) for c in cities]
-dd_defaults = [o["value"] for o in dd_options]
 
-# Generate geojson with a marker for each city and name as tooltip.
-geojson = dlx.dicts_to_geojson([{**c, **dict(tooltip=c['name'])} for c in cities])
+app = Dash(__name__)
 
-# Create javascript function that filters on feature name.
-geojson_filter = assign("function(feature, context){return context.props.hideout.includes(feature.properties.name);}")
+col_names = [{"name": i, "id": i} for i in df.columns]
+table_data = df.to_dict('records')
 
-# Create example app.
-app = Dash()
-app.layout = html.Div([
-    dl.Map(children=[
-        dl.TileLayer(),
-        dl.GeoJSON(data=geojson, options=dict(filter=geojson_filter), hideout=dd_defaults, id="geojson", zoomToBounds=True)
-    ], style={'width': '100%', 'height': '50vh', 'margin': "auto", "display": "block"}, id="map"),
-    dcc.Dropdown(id="dd", value=dd_defaults, options=dd_options, clearable=False, multi=False)
-])
-# Link drop down to geojson hideout prop (could be done with a normal callback, but clientside is more performant).
-app.clientside_callback("function(x){return x;}", Output("geojson", "hideout"), Input("dd", "value"))
+
+
+app.layout = dash_table.DataTable(columns = col_names, 
+                                  data = table_data,
+                                  export_format = 'csv', 
+                                  id = "dash_table")
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug=True)

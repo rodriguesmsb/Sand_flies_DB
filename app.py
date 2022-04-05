@@ -1,10 +1,8 @@
 import dash
 import os
-from dash import dcc
-from dash import html
+from dash import dcc, html, dash_table
 import dash_bootstrap_components as dbc
 import dash_leaflet as dl
-from dash_leaflet import express as dlx
 from dash.dependencies import Input, Output, State
 from dash_extensions.javascript import Namespace, arrow_function
 import plotly.express as px
@@ -26,11 +24,17 @@ app.title = "Sand_flies_DB"
 df = pd.read_csv("data/DATASET_SAND_FLY_RO_MAPS.csv", sep =";", encoding = "ISO-8859-1", low_memory=False)
 
 
+df.drop(labels = ["Leishmania Detection"], inplace = True, axis = 1)
+
+
 species_list = df["Species"].values
 species_list = list(set(species_list))
 
-markers = [dl.Marker(position = [[-63.13,-8.33],[-63.14,-8.34]])]
 
+#get colnames for dash table
+col_names = [{"name": i, "id": i} for i in df.columns]
+
+markers = [dl.Marker(position = [[-63.13,-8.33],[-63.14,-8.34]])]
 
 
 def plotHB(df):
@@ -116,7 +120,12 @@ app.layout = html.Div(
         children = [
             dcc.Graph(id = "hor_plot",
                      style = {'display': 'grid', 
-                              "margin-left": "50px"})
+                              "margin-left": "50px"}),
+            dash_table.DataTable(columns = col_names,
+                                 data = [],
+                                 export_format = "csv", 
+                                 id = "dash_table",
+                                 page_size=10)
         ],
         className = "card-2"
     )
@@ -126,6 +135,7 @@ app.layout = html.Div(
 
 
 
+#update horizontal plot
 @app.callback(Output(component_id = "hor_plot", component_property = "figure"),
               [Input(component_id = "species_selector", component_property = "value")])
 def update_graph(species):
@@ -137,9 +147,16 @@ def update_graph(species):
         new_df = new_df.sort_values(by = ["count"], ascending = False)[0:5]
         return plotHB(new_df.sort_values(by = ["count"]))
         
-
-
-
+#update table
+@app.callback(Output(component_id = "dash_table", component_property = "data"),
+              [Input(component_id = "species_selector", component_property = "value")])
+def update_table(species):
+    if species == "No species":
+        pass
+    else:
+        new_df = df[df["Species"] == species]
+        new_df = new_df.to_dict('records')
+        return new_df
 #run app
 if __name__ == '__main__':
     app.run_server(debug = True)
