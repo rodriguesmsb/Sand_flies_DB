@@ -135,7 +135,8 @@ app.layout = html.Div(
                 children = [
                     dcc.Graph(id = "map", 
                               config = {'displayModeBar': False},
-                              style = {"border-radius": "10px"})],
+                              style = {"border-radius": "10px",
+                                       "margin-right": "5px"})],
                 className = "map"
             )
              
@@ -147,8 +148,10 @@ app.layout = html.Div(
     html.Div(
         children = [
             dcc.Graph(id = "hor_plot",
+                     config = {'displayModeBar': False},
                      style = {'display': 'grid', 
-                              "margin-left": "50px"})
+                              "margin-left": "50px",
+                              "margin-right": "20px"})
             
         ],
         className = "card-3"
@@ -159,7 +162,7 @@ app.layout = html.Div(
                                  data = [],
                                  export_format = "csv", 
                                  id = "dash_table",
-                                 page_size = 10)
+                                 page_size = 8)
         ],
         className = "card-4"
     )
