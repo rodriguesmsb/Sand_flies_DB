@@ -35,8 +35,8 @@ markers = [dl.Marker(position = [[-63.13,-8.33],[-63.14,-8.34]])]
 
 def plotHB(df):
     bar = go.Bar(
-        x = df["Municipality"],
-        y = df["Count"],
+        y = df["Municipality"],
+        x = df["count"],
         orientation = "h"
     )
     data = [bar]
@@ -128,13 +128,13 @@ app.layout = html.Div(
               [Input(component_id = "species_selector", component_property = "value")])
 def update_graph(species):
     if species == "No species":
-        pass
+        return {"data":[] , "layout": go.Layout(xaxis = {"title": "Abundance"})}
     else:
         new_df = df[df["Species"] == species]
-        new_df = df.groupby(["Municipality"]).size().reset_index(name = "count")
-        new_df = new_df.sort_values(by = ["count"])
-        print(species)
-        print(new_df.head())
+        new_df = new_df.groupby(["Municipality"]).size().reset_index(name = "count")
+        new_df = new_df.sort_values(by = ["count"], ascending = False)[0:5]
+        return plotHB(new_df.sort_values(by = ["count"]))
+        
 
 
 
