@@ -159,4 +159,4 @@ def update_table(species):
         return new_df
 #run app
 if __name__ == '__main__':
-    app.run_server(debug = True)
+    app.run_server()
