@@ -23,9 +23,28 @@ external_stylesheets = ["https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7
 app.title = "Sand_flies_DB"
 
 
-df = pd.read_csv("data/Dataset_cons.csv")
+df = pd.read_csv("data/DATASET_SAND_FLY_RO_MAPS.csv", sep =";", encoding = "ISO-8859-1", low_memory=False)
+
+
 species_list = df["Species"].values
 species_list = list(set(species_list))
+
+markers = [dl.Marker(position = [[-63.13,-8.33],[-63.14,-8.34]])]
+
+
+
+def plotHB(df):
+    bar = go.Bar(
+        x = df["Municipality"],
+        y = df["Count"],
+        orientation = "h"
+    )
+    data = [bar]
+    layout = go.Layout(xaxis = {"title": "Abundance"})
+    return {"data": data, "layout": layout}
+
+
+
 
 ### Create dash layout
 app.layout = html.Div(
@@ -67,11 +86,25 @@ app.layout = html.Div(
             #create the first row
             html.Div(
                 children = [
-                    dcc.Dropdown(species_list, id = "species_selector", style ={"color": "rgb(229 231 235)",
-                                                                                "backgroundColor": "rgb(229 231 235)",
-                                                                                "border-radius": "10px"}),
+                    dcc.Dropdown(species_list, 
+                                id = "species_selector", 
+                                style ={"color": "rgb(229 231 235)",
+                                         "backgroundColor": "rgb(229 231 235)",
+                                         "border-radius": "10px"},
+                                value = "No species"),
                 ],
                 className = "species-selector",
+            ),
+            html.Div(
+                children = [
+                    #plot map
+                    dl.Map(center = [-11, -63],
+                           zoom = 7,
+                           children = [
+                                dl.TileLayer()
+                           ])
+                ],
+                className = "leaflet-map"
             )
 
         ],
@@ -80,7 +113,9 @@ app.layout = html.Div(
 
     #last plot
     html.Div(
-        children = [],
+        children = [
+            dcc.Graph(id = "hor_plot")
+        ],
         className = "card-2"
     )
     ],
@@ -88,6 +123,21 @@ app.layout = html.Div(
 )
 
 
+
+@app.callback(Output(component_id = "hor_plot", component_property = "figure"),
+              [Input(component_id = "species_selector", component_property = "value")])
+def update_graph(species):
+    if species == "No species":
+        pass
+    else:
+        new_df = df[df["Species"] == species]
+        new_df = df.groupby(["Municipality"]).size().reset_index(name = "count")
+        new_df = new_df.sort_values(by = ["count"])
+        print(species)
+        print(new_df.head())
+
+
+
 #run app
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug = True)

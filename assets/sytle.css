@@ -15,7 +15,6 @@
     background-color: rgb(248 250 252);
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: auto 1fr 1fr;
-    gap: 24px;
     max-width: 100%;
     height: 97vh;
 }
@@ -57,8 +56,8 @@
 
 
 .card-1{
-    grid-column: 1 / span 12;
-    grid-row: 2;
+    grid-column: 1 / span 6;
+    grid-row: 2 /span 2;
     border: 3px solid rgb(255, 206, 71);
     border-radius: 8px;
     background-color: white;
@@ -71,20 +70,22 @@
 }
 
 .card-2{
-    grid-column: 1 / span 12;
-    grid-row: 3;
+    grid-column: 7 / span 6;
+    grid-row: 2 /span 2;
     border: 3px solid rgb(255, 206, 71);
     border-radius: 8px;
     background-color: white;
-    margin-left: 50px;
     margin-right: 50px;
+    margin-left: -40px;
 }
 
 
 .species-selector{
-    grid-column: 1 / span 3;
+    grid-column: 8 / span 5;
     margin-top: 30px;
     margin-left: 5px;
+    margin-bottom: 20px;
+    margin-right: 10px;
 }
 
 
@@ -92,3 +93,9 @@
     background-color: rgb(255, 206, 71);
     color: white;
   }
+
+.leaflet-map{
+    display: grid;
+    grid-column: 1 / span 12;
+
+}
