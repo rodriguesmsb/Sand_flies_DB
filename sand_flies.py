@@ -86,7 +86,6 @@ app.layout = html.Div(
 
     ###Header
         html.Div(
-            id = "header",
             children = [
                 html.Div(
                     children = [
