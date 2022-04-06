@@ -20,7 +20,8 @@ server = app.server
 df = pd.read_csv("data/DATASET_SAND_FLY_RO_MAPS.csv", sep =";", encoding = "ISO-8859-1", low_memory=False)
 
 
-df.drop(labels = ["Leishmania Detection"], inplace = True, axis = 1)
+#remove some useless columns
+df.drop(labels = ["Leishmania Detection", "Subtribes"], inplace = True, axis = 1)
 
 
 species_list = df["Species"].values
