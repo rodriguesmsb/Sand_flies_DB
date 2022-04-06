@@ -10,13 +10,15 @@
     color: inherit;
   }
 
-.container{
+#container{
     display: grid;
     background-color: rgb(248 250 252);
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: auto auto 1fr 1fr;
-    max-width: 100%;
+    width: 100%;
     height: 97vh;
+    position: relative;
+
 }
 
 .header{
@@ -122,4 +124,58 @@
 #species_selector .VirtualizedSelectFocusedOption {
     background-color: rgb(255, 206, 71);
     color: white;
+}
+
+/**Try to add control just for mobile devices**/
+.mobile-navigation{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(248 250 252);
+    padding: 24px;
+    display: none;
+
+    transform: translateX(-100%);
+    transition: transform 300ms ease-in-out;
+}
+
+
+.mobile-navigation__open{
+    transform: translateX(0);
+
+}
+
+.mobile-navigation--header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+@media only screen and (max-width: 660px){
+    main{
+        display: block;
+    }
+
+    .header{
+        display: none;
+
+    }
+
+    .card-1{
+        display: none;
+    }
+
+    .card-2{
+        display: none;
+    }
+
+    .card-3 {
+        display: none;
+    }
+
+    .card-4{
+        display:none
+    }
+
 }

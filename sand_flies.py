@@ -10,9 +10,11 @@ import base64
 
 
 ### Create a instance of Dash class
-app = dash.Dash(__name__, 
-external_stylesheets = ["https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
-                        "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"])
+app = dash.Dash(__name__,
+                meta_tags=[{'name': 'viewport',
+                           'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5,'}],
+                external_stylesheets = ["https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
+                                        "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"])
 app.title = "Sand_flies_DB"
 
 server = app.server
@@ -77,7 +79,7 @@ def plotMap(lat, long, text, marker):
 ### Create dash layout
 app.layout = html.Div(
 
-    
+    id = "container",
     children = [
     
     #create a div with header conf
