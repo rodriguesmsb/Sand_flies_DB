@@ -10,7 +10,7 @@
     color: inherit;
   }
 
-#container{
+.container{
     display: grid;
     background-color: rgb(248 250 252);
     grid-template-columns: repeat(12, 1fr);
@@ -58,8 +58,7 @@
 
 
 .card-1{
-    grid-column: 1 / span 6;
-    grid-row: 2 /span 1;
+    
     border: 3px solid rgb(255, 206, 71);
     border-radius: 8px;
     background-color: white;
@@ -106,21 +105,38 @@
     margin-top: 10px;
 }
 
+.species-selector{
+    grid-column: 1 / span 6;
+    grid-row: 2 / span 1;
+    display: grid;
+    grid-template-columns: repeat(12,1fr);
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 3px solid rgb(255, 206, 71);
+    height: 100px;
+}
+
+#species_selector{
+    display: grid;
+    grid-column: 8/ span 5;
+    align-items: center;
+
+}
+
+/**style dcc dropdown**/
+#species_selector .Select-control{
+    background-color: rgb(229 231 235);
+    color:rgb(229 231 235);
+    border-radius: 10px;
+}
 
 .map{
     display: grid;
     grid-column: 1 / span 12;
+    position:relative;
 }
-
-
-.species-selector{
-    grid-column: 8 / span 5;
-    margin-top: 30px;
-    margin-left: 5px;
-    margin-bottom: 20px;
-    margin-right: 10px;
-}
-
 
 #species_selector .VirtualizedSelectFocusedOption {
     background-color: rgb(255, 206, 71);
@@ -152,17 +168,13 @@
 }
 
 @media only screen and (max-width: 660px){
-    
-    main{
-        display: block;
-    }
 
     .header{
         display: block;
     }
 
     h1{
-        font-size: 20px;
+        font-size: 14px;
     }
 
     .header-title{
@@ -179,9 +191,18 @@
         display: none;
     }
 
+    .species-selector{
+        grid-column: 1 / span 12;
+        margin-top: 5px;
+        margin-left: 10px;
+        margin-right: 10px;
+        height: 50px;
+    }
 
-    .card-1{
-        display: none;
+    #species_selector{
+        display: grid;
+        grid-column: 8/span 5;
+        font-size: 12px;
     }
 
     .card-2{

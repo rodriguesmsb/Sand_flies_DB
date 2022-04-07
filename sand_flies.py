@@ -79,7 +79,6 @@ def plotMap(lat, long, text, marker):
 ### Create dash layout
 app.layout = html.Div(
 
-    id = "container",
     children = [
     
     #create a div with header conf
@@ -111,21 +110,12 @@ app.layout = html.Div(
     html.Div(
 
         children = [
-
             #create the first row
-            html.Div(
-                children = [
-                    dcc.Dropdown(species_list, 
-                                id = "species_selector", 
-                                style ={"color": "rgb(229 231 235)",
-                                         "backgroundColor": "rgb(229 231 235)",
-                                         "border-radius": "10px"},
-                                value = "No species"),
-                ],
-                className = "species-selector"
-            )
-        ],
-        className = "card-1"
+            dcc.Dropdown(species_list,
+                        id = "species_selector", 
+                        value = "No species"),
+            ],
+            className = "species-selector"
     ),
 
 
@@ -138,7 +128,8 @@ app.layout = html.Div(
                     dcc.Graph(id = "map", 
                               config = {'displayModeBar': False},
                               style = {"border-radius": "10px",
-                                       "margin-right": "5px"})],
+                                       "margin-right": "5px",
+                                       "position":"relative"})],
                 className = "map"
             )
              
