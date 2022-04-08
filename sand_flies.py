@@ -105,8 +105,7 @@ app.layout = html.Div(
             className = "header"
         ),
 
-    #create two card template
-     #first two plots
+    #using second row and columns 1/6 to draw a dropdown
     html.Div(
 
         children = [
@@ -119,23 +118,17 @@ app.layout = html.Div(
     ),
 
 
-    #create a specific card for map
+    #plot map on thrid row and columns 1/6
     html.Div(
-        children = [
-
-            html.Div(
-                children = [
-                    dcc.Graph(id = "map", 
-                              config = {'displayModeBar': False},
-                              style = {"border-radius": "10px",
-                                       "margin-right": "5px",
-                                       "position":"relative"})],
-                className = "map"
-            )
+            children = [
+                dcc.Graph(id = "map", 
+                          config = {'displayModeBar': False},
+                          style = {"border-radius": "10px",
+                                   "margin-right": "5px",
+                                    "position":"relative"})],
+            className = "map"
+            ),
              
-        ],
-        className = "card-2"
-    ),
 
     #last plot inline-block
     html.Div(
