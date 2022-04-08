@@ -127,6 +127,18 @@
     margin-right: 50px;
     position:relative;
     border: 3px solid rgb(255, 206, 71);
+    border-radius: 10px;
+}
+
+#map{
+    position: relative;
+    border-radius: 10px;
+}
+
+/**change svg border**/
+
+#map .js-plotly-plot .plotly .main-svg{
+    border-radius: 10px;
 }
 
 #species_selector .VirtualizedSelectFocusedOption {
@@ -196,8 +208,13 @@
         font-size: 12px;
     }
 
-    .card-2{
-        display: none;
+    .map{
+        display: grid;
+        grid-column: 1 / span 12;
+        grid-row: 3/ span 1;
+        margin-left: 10px;
+        margin-right: 10px;
+        height: 35vh;
     }
 
     .card-3 {

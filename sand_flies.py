@@ -7,6 +7,7 @@ from aux.functions import functions
 import pandas as pd
 import numpy as np
 import base64
+import planar
 
 
 ### Create a instance of Dash class
@@ -34,6 +35,20 @@ species_list = list(set(species_list))
 col_names = [{"name": i, "id": i} for i in df.columns]
 
 
+def determine_zoom_level(latitudes, longitudes):
+    ###This function return zoom, long and lat
+    all_pairs=[]
+    for lon, lat in zip(longitudes, latitudes):
+        all_pairs.append((lon,lat))
+    b_box = planar.BoundingBox(all_pairs)
+    area = b_box.height * b_box.width
+    zoom = np.interp(area, [0, 5**-10, 4**-10, 3**-10, 2**-10, 1**-10, 1**-5], 
+                              [20, 17,   16,     15,     14,     7,      5])
+    return zoom, b_box.center
+
+
+
+df["Lat"].values
 #set map box token
 mapbox_access_token = px.set_mapbox_access_token(open("assets/.mapbox_token").read())
 
@@ -49,7 +64,7 @@ def plotHB(df):
 
 
 
-def plotMap(lat, long, text, marker):
+def plotMap(lat, long, text, marker, zoom, box):
     fig = go.Figure(go.Scattermapbox(
         lat = lat, 
         lon = long,
@@ -66,11 +81,11 @@ def plotMap(lat, long, text, marker):
             accesstoken = mapbox_access_token,
             bearing = 0,
             center = go.layout.mapbox.Center(
-                lat = -11,
-                lon = -63
+                lat = box[1],
+                lon = box[0]
             ),
             pitch = 0,
-            zoom = 6
+            zoom = zoom
         ),
         margin = {"t": 5, "l": 5, "r": 5, "b": 0}
     )
@@ -122,10 +137,8 @@ app.layout = html.Div(
     html.Div(
             children = [
                 dcc.Graph(id = "map", 
-                          config = {'displayModeBar': False},
-                          style = {"border-radius": "10px",
-                                   "margin-right": "5px",
-                                    "position":"relative"})],
+                          config = {'displayModeBar': False})
+            ],
             className = "map"
             ),
              
@@ -165,20 +178,26 @@ app.layout = html.Div(
               [Input(component_id = "species_selector", component_property = "value")])
 def update_map(species):
     if species == "No species":
+        _, coord = determine_zoom_level(latitudes = df["Lat"].values, longitudes = df["Long"].values)
         return plotMap(lat = ["-11"], 
                        long = ["-63"], 
                        text = [""], 
-                       marker = dict(symbol = "college"))
+                       marker = dict(symbol = "college"),
+                       zoom = 0,
+                       box = coord)
     else:
         new_df = df[df["Species"] == species]
         new_df = new_df.groupby(["Lat", "Long", "Municipality"]).size().reset_index(name = "count")
         lat = new_df["Lat"].values
         lon = new_df["Long"].values
         text = new_df["Municipality"].values
+        zoom, coord = determine_zoom_level(latitudes = new_df["Lat"].values, longitudes = new_df["Long"].values)
         return plotMap(lat = lat,
                        long = lon,
                        text = text,
-                       marker = {"size": 15, "symbol": "circle"}
+                       marker = {"size": 15, "symbol": "circle"},
+                       zoom = zoom,
+                       box = coord
         )
 
 
