@@ -2,8 +2,6 @@
 
 
 /*style css for Spatio-Temporal viz*/
-
-
 *{
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
@@ -56,6 +54,16 @@
     margin-top: 0;
 }
 
+.map{
+    display: grid;
+    grid-column: 1 / span 6;
+    grid-row: 3/ span 2;
+    margin-left: 50px;
+    margin-right: 50px;
+    position:relative;
+    border: 3px solid rgb(255, 206, 71);
+    border-radius: 10px;
+}
 
 .card-3{
     grid-column: 7 / span 6;
@@ -106,16 +114,11 @@
     border-radius: 10px;
 }
 
-.map{
-    display: grid;
-    grid-column: 1 / span 6;
-    grid-row: 3/ span 2;
-    margin-left: 50px;
-    margin-right: 50px;
-    position:relative;
-    border: 3px solid rgb(255, 206, 71);
-    border-radius: 10px;
+#species_selector .VirtualizedSelectFocusedOption {
+    background-color: rgb(255, 206, 71);
+    color: white;
 }
+
 
 #map{
     position: relative;
@@ -127,9 +130,10 @@
     border-radius: 10px;
 }
 
-#species_selector .VirtualizedSelectFocusedOption {
-    background-color: rgb(255, 206, 71);
-    color: white;
+/**change plot features**/
+#hor_plot .js-plotly-plot .plotly .main-svg{
+    display: grid;
+    width: 95%;
 }
 
 @media only screen and (max-width: 660px){

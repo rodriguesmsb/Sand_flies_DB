@@ -147,10 +147,7 @@ app.layout = html.Div(
     html.Div(
         children = [
             dcc.Graph(id = "hor_plot",
-                     config = {'displayModeBar': False},
-                     style = {'display': 'grid', 
-                              "margin-left": "50px",
-                              "margin-right": "20px"})
+                     config = {'displayModeBar': False})
             
         ],
         className = "card-3"
