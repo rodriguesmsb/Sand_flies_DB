@@ -180,7 +180,12 @@
     }
 
     .card-3 {
-        display: none;
+        display: grid;
+        grid-column: 1 / span 12;
+        grid-row: 4/ span 1;
+        margin-left: 10px;
+        margin-right: 10px;
+        height: 35vh;
     }
 
     .card-4{

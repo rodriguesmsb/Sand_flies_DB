@@ -43,7 +43,7 @@ def determine_zoom_level(latitudes, longitudes):
     b_box = planar.BoundingBox(all_pairs)
     area = b_box.height * b_box.width
     zoom = np.interp(area, [0, 5**-10, 4**-10, 3**-10, 2**-10, 1**-10, 1**-5], 
-                              [20, 17,   16,     15,     14,     7,      5])
+                           [20, 17,   16,     15,     14,     7,      5])
     return zoom, b_box.center
 
 
@@ -155,6 +155,8 @@ app.layout = html.Div(
         ],
         className = "card-3"
     ),
+
+    
     html.Div(
         children = [
             dash_table.DataTable(columns = col_names,
